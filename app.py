@@ -15,6 +15,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer, OneHotEncoder, StandardScaler
 from xgboost import XGBClassifier
 
+st.set_page_config(page_title="AKI Prediction", layout="wide")
 # --- 1. Data Definitions ---
 all_columns = [
     "Gender",
@@ -257,7 +258,7 @@ def apply_feature_weights(X, feature_names):
         Xw = X.copy()
         for col in Xw.columns:
             w = clinical_weights.get(col, 1.0)
-            # คูณน้ำหนักคอลัมน์นั้น ๆ
+
             Xw[col] = Xw[col] * w
         return Xw
     else:
@@ -383,7 +384,7 @@ def chunk_list(data, size):
 # --- 5. UI Sections ---
 
 # 5.1 Patient & Baseline
-st.header("1. Patient & Baseline Characteristics")
+st.header("Patient & Baseline Characteristics")
 with st.container(border=True):
     col1, col2, col3 = st.columns(3)
     cat_baseline = [
@@ -577,6 +578,16 @@ if st.button("Submit Data and Predict", type="primary"):
                 st.subheader(f"ICU Risk Prediction: {prediction_details['Risk Level']}")
                 st.json(prediction_details)
             except Exception as e:
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
                 st.error(f"Prediction failed: {e}")
                 st.error(f"Prediction failed: {e}")
                 st.error(f"Prediction failed: {e}")

@@ -1,4 +1,8 @@
+import os
+
+import pandas as pd
 import streamlit as st
+from PIL import Image
 
 st.set_page_config(page_title="AKI Prediction Overview", layout="wide", page_icon="🩺")
 
@@ -165,3 +169,83 @@ Some categorical columns may contain **values that are not allowed** or are miss
 **Example:**
 """
     )
+
+st.header("AKI Prediction Model Performance Comparison")
+
+# Metrics table
+models_metrics = {
+    "Logistic Regression (plain)": {
+        "accuracy": 0.4780,
+        "macro avg precision": 0.2768,
+        "macro avg recall": 0.2917,
+        "macro avg f1": 0.2407,
+        "weighted avg precision": 0.7715,
+        "weighted avg recall": 0.4780,
+        "weighted avg f1": 0.5726,
+    },
+    "Logistic Regression + Clinical weights": {
+        "accuracy": 0.4780,
+        "macro avg precision": 0.2765,
+        "macro avg recall": 0.2917,
+        "macro avg f1": 0.2404,
+        "weighted avg precision": 0.7714,
+        "weighted avg recall": 0.4780,
+        "weighted avg f1": 0.5725,
+    },
+    "XGBoost (plain)": {
+        "accuracy": 0.8140,
+        "macro avg precision": 0.3363,
+        "macro avg recall": 0.2721,
+        "macro avg f1": 0.2753,
+        "weighted avg precision": 0.7450,
+        "weighted avg recall": 0.8140,
+        "weighted avg f1": 0.7686,
+    },
+    "XGBoost + Clinical weights": {
+        "accuracy": 0.8140,
+        "macro avg precision": 0.3363,
+        "macro avg recall": 0.2721,
+        "macro avg f1": 0.2753,
+        "weighted avg precision": 0.7450,
+        "weighted avg recall": 0.8140,
+        "weighted avg f1": 0.7686,
+    },
+    "XGBoost (after per-class threshold tuning)": {
+        "accuracy": 0.7623,
+        "macro avg precision": 0.3473,
+        "macro avg recall": 0.3590,
+        "macro avg f1": 0.3497,
+        "weighted avg precision": 0.7581,
+        "weighted avg recall": 0.7623,
+        "weighted avg f1": 0.7598,
+    },
+    "XGBoost — ICU Life-Saving Mode": {
+        "accuracy": 0.7287,
+        "macro avg precision": 0.3470,
+        "macro avg recall": 0.4474,
+        "macro avg f1": 0.3597,
+        "weighted avg precision": 0.7553,
+        "weighted avg recall": 0.7287,
+        "weighted avg f1": 0.7392,
+    },
+}
+
+df_metrics = pd.DataFrame(models_metrics).T
+st.subheader("Overall Metrics")
+st.table(df_metrics)
+IMG_FOLDER = "imgs/"
+
+with st.expander("Graphs"):
+    img_files = [
+        f
+        for f in os.listdir(IMG_FOLDER)
+        if f.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
+    ]
+
+    if not img_files:
+        st.write("No images found in the folder.")
+    else:
+        for img_file in img_files:
+            img_path = os.path.join(IMG_FOLDER, img_file)
+            image = Image.open(img_path)
+            st.image(image, caption=img_file, width=700)  # width in pixels
